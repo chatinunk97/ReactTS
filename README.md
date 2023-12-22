@@ -159,3 +159,68 @@ export enum ActionTypes {
 ```
 
 So to make it shorter we can just declare the name and that's it
+BUTT actions in redux seems to be needing a type of a string
+so this is not valid
+Ths instructor code work because of the old version ?
+
+For action object we can use an interface to type safe it
+This is handy because the reducer will also use the same thing
+
+```
+interface FetchTodosAction {
+  type: ActionTypes.fetchTodos;
+  payload: Todo[];
+}
+```
+
+# Constructing the reducer
+
+```
+import { Todo, FetchTodosAction } from "../actions";
+import { ActionTypes } from "../actions/types";
+
+export const todosReducer = (state: Todo[] = [], action: FetchTodosAction) => {
+  switch (action.type) {
+    case ActionTypes.fetchTodos:
+      return action.payload;
+    default:
+      return state;
+  }
+};
+```
+
+This is the reducer a reducer takes in the state (which the default is an empty array []) and the action object
+Like mentioned above, the action object which have the action type and the payload
+We reused the interface from the above step when we were doing FetchTodoActions
+
+reducers/index.ts
+
+```
+export interface StoreState {
+  todos: Todo[];
+}
+
+export const reducers = combineReducers<StoreState>({
+  todos: todosReducer,
+});
+```
+
+Normally an intergace check the type of the value
+but in this case we assign a function to todos so TS is checking whether 'todosReducer' is returning the value that matches Todo[]
+
+# Handy Central Exporting index file
+
+folder structure
+
+src
+actions
+index.ts
+todos.ts
+type.ts
+
+We can centralized everything inside index.ts
+
+```
+export * from "./todos";
+export * from "./types";
+```
