@@ -224,3 +224,5 @@ We can centralized everything inside index.ts
 export * from "./todos";
 export * from "./types";
 ```
+
+# This is for functional component refactor
